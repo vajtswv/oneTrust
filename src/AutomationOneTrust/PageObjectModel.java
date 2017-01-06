@@ -4,12 +4,15 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import PageObjects.Home_Page;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * Created by ksong on 1/5/2017.
@@ -40,33 +43,56 @@ public class PageObjectModel {
 
         //use pageobjects
         Actions action = new Actions(driver);
-
         System.out.println("TC2: Hover over Company link");
         action.moveToElement(Home_Page.company(driver)).build().perform();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         System.out.println("TC3: click Careers link\n");
         Home_Page.career(driver).click();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         //Prints all cities
-        List<WebElement> listcities = Home_Page.cities(driver);
-        for (WebElement city: listcities){
+        List<WebElement> Lists = driver.findElements(By.xpath("/html/body/section[2]/div/div/ul"));
 
-            String cities = city.getText();
-            System.out.println("Available cities: \n" + cities +"\n");
-            driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        for (int j=0;j<Lists.size();j++){
+            String thisCity = Lists.get(j).getText();
+            //driver.findElement(By.linkText(thisCity)).click();
+            System.out.println("Available cities: \n" + thisCity +"\n");
 
         }
 
-        //Prints all the jobs
-        driver.manage().timeouts().implicitlyWait(200, TimeUnit.SECONDS);
-        List<WebElement> atljobs = driver.findElements(By.xpath("//*[@id=\"atlanta\"]/div"));
-        for (WebElement jobs : atljobs){
+        for (WebElement cities: Lists){
+            //--debug section--
+            //String city = "ATLANTA";
+            //String city = "SAN FRANCISCO";
+            String city = "TORONTO";
+            String citys = cities.getText();
+            System.out.println("City: \n" + citys +"\n");
+            driver.findElement(By.linkText(city)).click();
+            myjobs(driver,city);
+
+        }
+        //close browser window
+        //driver.close();
+    }
+
+
+    public static void myjobs(WebDriver driver,String city){
+        if(city == "SAN FRANCISCO"){
+            city = "san-francisco";
+            String thisCity = city;
+        }else{
+            String thisCity = city.toLowerCase();
+        }
+        String thisCity = city.toLowerCase();
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\""+ thisCity + "\"]/div")));
+
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        List<WebElement> all_jobs = driver.findElements(By.xpath("/html/body/section[2]/div/div/div[2]"));
+        for (WebElement jobs : all_jobs){
             System.out.println("Available jobs: \n" + jobs.getText()+"\n");
         }
-
-        //close browser window
-        driver.close();
     }
 
 }
+
