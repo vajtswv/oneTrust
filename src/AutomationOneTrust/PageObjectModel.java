@@ -42,6 +42,51 @@ public class PageObjectModel {
         driver.get("https://onetrust.com/");
 
         //use pageobjects
+package AutomationOneTrust;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import PageObjects.Home_Page;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+/**
+ * Created by ksong on 1/5/2017.
+ * 1.enter the careers page
+ *2.Print the name of each city and all current open positions
+ *3.upload to GitHub and send me link.
+ */
+public class PageObjectModel {
+
+    //private static WebDriver driver = null;
+    public static void main(String[] args) {
+
+        System.out.println("*******************");
+        System.out.println("Browser Type: launching chrome browser.");
+
+        //launch chrome driver and disable developer mode
+        System.setProperty("webdriver.chrome.driver", "C:\\Selenium\\Chrome driver\\chromedriver.exe");
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--test-type");
+        WebDriver driver = new ChromeDriver(options);
+
+        //maximize chrome browser
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        //Navigate to onetrust.com
+        System.out.println("TC1: Navigate to one Trust site.");
+        driver.get("https://onetrust.com/");
+
+        //use pageobjects
         Actions action = new Actions(driver);
         System.out.println("TC2: Hover over Company link");
         action.moveToElement(Home_Page.company(driver)).build().perform();
@@ -60,24 +105,34 @@ public class PageObjectModel {
 
         }
 
-        for (WebElement cities: Lists){
+        //loop thru all cities and prints all current opennings.
+        for (WebElement cities: Lists) {
+
             //--debug section--
             //String city = "ATLANTA";
             //String city = "SAN FRANCISCO";
-            String city = "TORONTO";
+            //String city = "TORONTO";
+            //get the object and put into a string array.
             String citys = cities.getText();
-            System.out.println("City: \n" + city +"\n");
-            driver.findElement(By.linkText(city)).click();
-            myjobs(driver,city);
+            String[] parts = citys.split("\n");
+
+            //loop thru each city
+            for (String objCity : parts) {
+
+                System.out.println("City: \n" + objCity + "\n");
+                driver.findElement(By.linkText(objCity)).click();
+                myjobs(driver, objCity);
+            }
 
         }
         //close browser window
-        //driver.close();
+        driver.close();
     }
 
 
     public static void myjobs(WebDriver driver,String city){
-        if(city == "SAN FRANCISCO"){
+
+        if(city.equals("SAN FRANCISCO")){
             city = "san-francisco";
             String thisCity = city;
         }else{
@@ -95,4 +150,5 @@ public class PageObjectModel {
     }
 
 }
+
 
