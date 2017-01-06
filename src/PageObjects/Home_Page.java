@@ -4,11 +4,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.List;
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
 
-/**
- * Created by ksong on 1/5/2017.
- */
 public class Home_Page {
 
     private static WebElement element = null;
@@ -29,12 +29,5 @@ public class Home_Page {
 
     }
 
-    public static List<WebElement> cities(WebDriver driver){
-
-        //get all cities
-        List<WebElement> allcity = driver.findElements(By.xpath("/html/body/section[2]/div/div/ul"));
-
-        return (List<WebElement>) allcity;
-
-    }
 }
+
