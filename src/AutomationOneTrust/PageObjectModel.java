@@ -66,7 +66,7 @@ public class PageObjectModel {
             //String city = "SAN FRANCISCO";
             String city = "TORONTO";
             String citys = cities.getText();
-            System.out.println("City: \n" + citys +"\n");
+            System.out.println("City: \n" + city +"\n");
             driver.findElement(By.linkText(city)).click();
             myjobs(driver,city);
 
